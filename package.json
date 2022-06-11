@@ -1,0 +1,19 @@
+{
+  "name": "ctseventmanagerjs",
+  "version": "1.0.0",
+  "description": "This is cts event manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmwri/CtsEventManagerJS.git"
+  },
+  "author": "Taiyu Honma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hmwri/CtsEventManagerJS/issues"
+  },
+  "homepage": "https://github.com/hmwri/CtsEventManagerJS#readme"
+}

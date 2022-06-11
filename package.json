@@ -4,7 +4,8 @@
   "description": "This is cts event manager",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/hmwri/CtsEventManagerJS/issues"
   },
-  "homepage": "https://github.com/hmwri/CtsEventManagerJS#readme"
+  "homepage": "https://github.com/hmwri/CtsEventManagerJS#readme",
+  "devDependencies": {
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.7.3",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.9.2"
+  }
 }

@@ -1,4 +1,4 @@
-const { anime } = require("animejs");
+const anime = require("animejs");
 
 interface haveUUID {
     readonly UUID: string
@@ -20,7 +20,7 @@ type Trigger = {
 } & haveUUID
 
 
-function MakeEvent(e: CtsEvent) {
+module.exports.MakeEvent = function (e: CtsEvent) {
     for (const trigger of e.Triggers.values()) {
         for (const behaviour of e.Behaviours.values()) {
             window.addEventListener("loaded", makeBehaviourFunction(behaviour));
@@ -28,7 +28,6 @@ function MakeEvent(e: CtsEvent) {
         console.log(trigger)
     }
 }
-export const MAKECTSEVENT = MakeEvent;
 
 const makeBehaviourFunction = function (behaviour: Behaviour): (() => void) {
     return function () {

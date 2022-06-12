@@ -28,7 +28,7 @@ function MakeEvent(e: CtsEvent) {
         console.log(trigger)
     }
 }
-module.exports(MakeEvent);
+export const MAKECTSEVENT = MakeEvent;
 
 const makeBehaviourFunction = function (behaviour: Behaviour): (() => void) {
     return function () {

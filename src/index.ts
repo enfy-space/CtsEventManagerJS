@@ -1,4 +1,4 @@
-const anime = require("animejs");
+const { anime } = require("animejs");
 
 interface haveUUID {
     readonly UUID: string

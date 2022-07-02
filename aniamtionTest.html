@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>Page Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.js"></script>
+</head>
+
+<body>
+<style>
+    .shadow {
+        position: absolute;
+        opacity: .2;
+    }
+
+    .square {
+        width: 28px;
+        height: 28px;
+        margin: 1px;
+        font-size: 12px;
+        translateX:0;
+        background-color: #000;
+    }
+</style>
+<div id="animation-keyframes">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+</div>
+<script>
+    var box = document.querySelector('.square');
+    var target = {
+        positionX : -40,
+        positionY : 0,
+        positionZ: 0,
+    }
+    var animation = anime({
+        targets: target,
+        positionX: [
+            { value: 0,duration:2000,delay:4000},
+            { value: 40,delay:3000},
+        ],
+        update:function (){
+            box.setAttribute("a",target.positionX)
+            console.log(target.positionX);
+        },
+        easing:"linear",
+        loop:true,
+
+    });
+</script>
+</body>
+</html>

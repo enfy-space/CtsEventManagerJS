@@ -1,5 +1,7 @@
+import {Entity} from "aframe";
+
 const anime = require("animejs");
-const three = require("three");
+require("aframe")
 
 //UUIDを持っている
 interface haveUUID {
@@ -13,14 +15,8 @@ type Attribute =
     "RotationX" | "RotationY" | "RotationZ" |
     "ScaleX" | "ScaleY" | "ScaleZ"
 type Easing = "Ease" | "Linear"
-type Direction = "Alternate" | "Normal"
-type Loop = number | "INF"
 
-type Vector3 = {
-    x: number,
-    y: number,
-    z: number,
-}
+
 type CtsEvent = Readonly<{
     Triggers: Trigger[],
     Behaviours: Behaviour[],
@@ -86,7 +82,7 @@ const makeEvent = function (targetUUID: string, e: CtsEvent) {
 
 module.exports.MakeEvent = makeEvent
 
-function makeEventTest() {
+export function makeEventTest() {
     makeEvent(
         "box",
         {
@@ -106,7 +102,11 @@ function makeEventTest() {
                             Attribute: "PositionZ",
                             Easing: "Linear",
                             Duration: 0,
-                            KeyFrames: []
+                            KeyFrames: [{
+                                UUID: "",
+                                time:0,
+                                value:0
+                            }]
                         }]
                     }]
                 }
@@ -119,7 +119,7 @@ function makeEventTest() {
 const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour): (() => void) {
     switch (behaviour.Type) {
         case "Animation":
-            const target = getObjectWithID(targetUUID)
+            const target : Entity = getObjectWithID(targetUUID)
             const animation = behaviour.Animation
             if (animation == undefined) {
                 throw new Error("behaviour type is animation but there is no animation information")
@@ -178,7 +178,7 @@ function convertToAnimKeyFrame(kfs: KeyFrame[]): AnimKeyFrame[] {
     return result;
 }
 
-function updateValue(target: Element, attr: Attribute, value: number) {
+function updateValue(target: Entity, attr: Attribute, value: number) {
     switch (attr) {
         case "PositionX":
             target.object3D.position.setX(value)
@@ -190,7 +190,7 @@ function updateValue(target: Element, attr: Attribute, value: number) {
     }
 }
 
-function getObjectWithID(UUID: string): Element {
+function getObjectWithID(UUID: string): Entity{
     const target = document.querySelector("#" + UUID)
     if (target == null) {
         throw new Error("Not found " + UUID)

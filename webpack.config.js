@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
   // development or production。
-  mode: "production",
+  mode: "development",
   resolve: {
     extensions: [".ts", ".js"],
   },

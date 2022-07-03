@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@types/aframe": "^1.2.0",
+    "@types/animejs": "^3.1.4",
     "aframe": "^1.3.0",
     "animejs": "^3.2.1",
     "three": "^0.142.0"

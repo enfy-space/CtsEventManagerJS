@@ -1,7 +1,7 @@
 import {Entity} from "aframe";
 
-const anime = require("animejs");
-require("aframe")
+import anime from "animejs";
+
 
 //UUIDを持っている
 interface haveUUID {
@@ -15,6 +15,7 @@ type Attribute =
     "RotationX" | "RotationY" | "RotationZ" |
     "ScaleX" | "ScaleY" | "ScaleZ"
 type Easing = "Ease" | "Linear"
+type Loop = number | boolean
 
 
 type CtsEvent = Readonly<{
@@ -33,14 +34,13 @@ type CtsAnimation = Readonly<{
 }>
 
 type CtsAnimationClip = Readonly<{
-    Loop: boolean,
+    Loop: Loop,
     Curves: CtsAnimationCurve[];
 }>
 
 type CtsAnimationCurve = Readonly<{
     Attribute: Attribute,
     Easing: Easing,
-    Duration: Number,
     KeyFrames: KeyFrame[];
 }>
 
@@ -74,15 +74,12 @@ const makeEvent = function (targetUUID: string, e: CtsEvent) {
                     const target = getObjectWithID(trigger.TargetUUID)
                     target.addEventListener("clicked", makeBehaviourFunction(targetUUID, behaviour))
                 case "Auto":
-                    window.addEventListener("loaded", makeBehaviourFunction(targetUUID, behaviour));
+                    window.addEventListener("load", makeBehaviourFunction(targetUUID, behaviour));
             }
         }
     }
 }
-
-module.exports.MakeEvent = makeEvent
-
-export function makeEventTest() {
+const  makeEventTest = function () {
     makeEvent(
         "box",
         {
@@ -101,12 +98,17 @@ export function makeEventTest() {
                         Curves: [{
                             Attribute: "PositionZ",
                             Easing: "Linear",
-                            Duration: 0,
+
                             KeyFrames: [{
                                 UUID: "",
                                 time:0,
                                 value:0
-                            }]
+                            },
+                                {
+                                    UUID: "",
+                                    time:2,
+                                    value:2
+                                }]
                         }]
                     }]
                 }
@@ -114,6 +116,10 @@ export function makeEventTest() {
         },
     )
 }
+module.exports.MakeEvent = makeEvent
+module.exports.MakeEventTest = makeEventTest
+
+
 
 //Behaviourをもとに関数を作成
 const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour): (() => void) {
@@ -128,16 +134,23 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
                 for (const curve of clip.Curves) {
                     if (curve.KeyFrames.length < 2) throw new Error("require more than 1 keyframes")
                     const animKeyFrames = convertToAnimKeyFrame(curve.KeyFrames)
+
                     return function () {
+
                         const AnimationProperty: { value: number } = {
                             value: curve.KeyFrames[0].value
                         }
+
+
                         anime({
                             targets: AnimationProperty,
                             value: animKeyFrames,
                             update: function () {
+                                console.log(AnimationProperty.value)
                                 updateValue(target,curve.Attribute,AnimationProperty.value);
-                            }
+
+                            },
+                            loop: clip.Loop
                         });
                     }
 
@@ -170,8 +183,8 @@ function convertToAnimKeyFrame(kfs: KeyFrame[]): AnimKeyFrame[] {
         if (i != 0) {
             result.push({
                 value: kf.value,
-                duration: kf.time - kfs[i - 1].time,
-                delay: i == 1 ? kfs[0].time : 0
+                duration: (kf.time - kfs[i - 1].time) * 1000,
+                delay: i == 1 ? (kfs[0].time) * 1000 : 0
             })
         }
     }

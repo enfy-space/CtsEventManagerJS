@@ -203,7 +203,7 @@ function convertToAnimKeyFrame(kfs: KeyFrame[]): AnimKeyFrame[] {
 function updateValue(target: Entity, attr: Attribute, value: number) {
     switch (attr) {
         case 1111:
-            target.object3D.position.setX(value)
+            target.object3D.position.setX(-value)
             break
         case 1112:
             target.object3D.position.setY(value)

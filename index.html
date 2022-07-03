@@ -1,91 +1,58 @@
 <html>
-
 <head>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
-    <!-- <script src="https://hmwri.com/enfy/CtsEventManagerJS/public/lib/index.js"></script> -->
-    <script src="public/lib/index.js"></script>
+    <script src="public/lib/index.js">
+    </script>
     <title>
         タイトル</title>
 </head>
-
 <body>
-
 <a-scene>
     <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="rgb(127,127,127)" shadow>
     </a-plane>
     <a-sky color="rgb(255,255,255)">
     </a-sky>
-    <a-box id="box" position="-1 0.5 5" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
+    <a-box position="-1 0.5 1" rotation="0 0 0" scale="1 1 1" id="cdc44998-e522-4c37-8a88-7a8ad22e1bc9"
+           color="rgb(0,0,0)" shadow>
     </a-box>
-    <a-box position="1 0.5 4" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
+    <a-box position="-1 1.5 1" rotation="0 0 0" scale="1 1 1" id="b122331a-4e2e-4b6e-90f2-78e9a8adfa8d"
+           color="rgb(0,0,0)" shadow>
     </a-box>
-    <a-box position="3 0.5 1" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
+    <a-box position="-1 1.5 0" rotation="0 0 0" scale="1 1 1" id="b31c1a9b-9664-4787-bf88-87b1fdfae22e"
+           color="rgb(0,0,0)" shadow>
     </a-box>
-    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="2 -3.95125E-19 2" rotation="0 0 0"
-              scale="1 1 1">
-    </a-entity>
-    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -4.172471E-19 2" rotation="0 0 0"
-              scale="1 1 1">
-    </a-entity>
-    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="1 -1.635766E-19 1" rotation="0 0 0"
-              scale="1 1 1">
-    </a-entity>
-    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="3 3.038248E-19 -1" rotation="0 0 0"
-              scale="1 1 1">
-    </a-entity>
-    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="2 6.583229E-20 0" rotation="0 0 0"
-              scale="1 1 1">
-    </a-entity>
-    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -1.791579E-19 1" rotation="0 0 0"
-              scale="1 1 1">
-    </a-entity>
-    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -7.027858E-20 0" rotation="0 0 0"
-              scale="1 1 1">
-    </a-entity>
     <a-assets>
-        <a-asset-item id="https://hmwri.com/enfy/table.gltf" src="https://hmwri.com/enfy/table.gltf">
-        </a-asset-item>
     </a-assets>
 </a-scene>
-
-</body>
 <script>
-    CtsEM.MakeEvent("box",
-        {
-            UUID: "",
-            Triggers: [{
-                UUID: "",
-                Type: "Auto",
-                //TargetUUID: "",
-            }],
-            Behaviours: [{
-                UUID: "",
-                Type: "Animation",
-                Animation: {
-                    Clips: [{
-                        Loop: true,
-                        Curves: [{
-                            Attribute: "RotationZ",
-                            Easing: "Ease",
-
-                            KeyFrames: [{
-                                UUID: "",
-                                time: 0,
-                                value: 0
-                            },
-                                {
-                                    UUID: "",
-                                    time: 2,
-                                    value: 96
-                                }]
-                        }]
-                    }]
-                }
-            }]
-        },)
-
+    CtsEM.MakeEvent("b31c1a9b-9664-4787-bf88-87b1fdfae22e", {
+        "uuid": "280a64b1-eb88-44f8-882b-8b20c999a2c2",
+        "triggers": [{"uuid": "19fa157b-0ba8-4bb9-8dfa-1aa03fd4742a", "triggerType": 111, "targetUuid": ""}],
+        "behaviours": [{
+            "uuid": "2cf836c4-d452-47cb-973c-fc8144ca6139",
+            "behaviourType": 111,
+            "animation": {
+                "uuid": "2cf836c4-d452-47cb-973c-fc8144ca6139",
+                "ctsClips": [{
+                    "curves": [{
+                        "attribute": 1111,
+                        "easing": 11,
+                        "keyFrames": [{"time": 0.0, "value": -1.0}, {"time": 2.0, "value": 2.0}]
+                    }, {
+                        "attribute": 1112,
+                        "easing": 11,
+                        "keyFrames": [{"time": 0.0, "value": 1.5}, {"time": 2.0, "value": 0.5}]
+                    }, {
+                        "attribute": 1113,
+                        "easing": 11,
+                        "keyFrames": [{"time": 0.0, "value": 0.0}, {"time": 2.0, "value": -1.0}]
+                    }], "loop": true
+                }]
+            },
+            "body": ""
+        }]
+    })
 </script>
-
+</body>
 </html>

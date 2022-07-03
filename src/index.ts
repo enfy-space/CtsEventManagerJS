@@ -9,11 +9,11 @@ interface haveUUID {
 }
 
 type TriggerType =
-      111 | // Auto
-      211   // Collision
+    111 | // Auto
+    211   // Collision
 type BehaviourType =
-      111 | // Animation
-      211   // Link
+    111 | // Animation
+    211   // Link
 type Attribute =
     1111 | 1112 | 1113 | //PositionX ~ Z
     1121 | 1122 | 1123 | //RotationX ~ Z
@@ -88,7 +88,7 @@ const makeEvent = function (targetUUID: string, e: CtsEvent) {
         }
     }
 }
-const  makeEventTest = function () {
+const makeEventTest = function () {
     makeEvent(
         "box",
         {
@@ -110,13 +110,13 @@ const  makeEventTest = function () {
 
                             keyFrames: [{
                                 uuid: "",
-                                time:0,
-                                value:0
+                                time: 0,
+                                value: 0
                             },
                                 {
                                     uuid: "",
-                                    time:2,
-                                    value:960
+                                    time: 2,
+                                    value: 960
                                 }]
                         }]
                     }]
@@ -129,23 +129,23 @@ module.exports.MakeEvent = makeEvent
 module.exports.MakeEventTest = makeEventTest
 
 
-
 //Behaviourをもとに関数を作成
 const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour): (() => void) {
     switch (behaviour.behaviourType) {
         //Animation
         case 111:
-            const target : Entity = getObjectWithID(targetUUID)
+            const target: Entity = getObjectWithID(targetUUID)
             const animation = behaviour.animation
             if (animation == undefined) {
                 throw new Error("behaviour type is animation but there is no animation information")
             }
+            const functions : (() => void)[] = [];
             for (const clip of animation.ctsClips) {
                 for (const curve of clip.curves) {
                     if (curve.keyFrames.length < 2) throw new Error("require more than 1 keyframes")
                     const animKeyFrames = convertToAnimKeyFrame(curve.keyFrames)
 
-                    return function () {
+                    functions.push(function () {
 
                         const AnimationProperty: { value: number } = {
                             value: curve.keyFrames[0].value
@@ -156,25 +156,21 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
                             targets: AnimationProperty,
                             value: animKeyFrames,
                             update: function () {
-                                console.log((AnimationProperty.value/180) * Math.PI)
-                                updateValue(target,curve.attribute,AnimationProperty.value);
+                                console.log((AnimationProperty.value / 180) * Math.PI)
+                                updateValue(target, curve.attribute, AnimationProperty.value);
                             },
                             loop: clip.loop,
-                            direction : clip.loop == false ? "normal": "alternate",
-                            easing:curve.easing == 11 ? "linear" : "cubicBezier(.33, .0, .66, 1)",
+                            direction: clip.loop == false ? "normal" : "alternate",
+                            easing: curve.easing == 11 ? "linear" : "cubicBezier(.33, .0, .66, 1)",
                         });
-                    }
+                    })
 
                 }
             }
             return function () {
-                anime({
-                    targets: 'div',
-                    translateX: 250,
-                    rotate: '1turn',
-                    backgroundColor: '#FFF',
-                    duration: 800
-                });
+                for (const f of functions) {
+                    f();
+                }
             }
         // Link
         case 211:
@@ -216,13 +212,13 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
             target.object3D.position.setZ(value)
             break
         case 1121:
-            target.object3D.rotation.x = (value/180) * Math.PI
+            target.object3D.rotation.x = (value / 180) * Math.PI
             break
         case 1122:
-            target.object3D.rotation.y = (value/180) * Math.PI
+            target.object3D.rotation.y = (value / 180) * Math.PI
             break
         case 1123:
-            target.object3D.rotation.z = (value/180) * Math.PI
+            target.object3D.rotation.z = (value / 180) * Math.PI
             break
         case 1131:
             target.object3D.scale.setX(value)
@@ -237,7 +233,7 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
     }
 }
 
-function getObjectWithID(UUID: string): Entity{
+function getObjectWithID(UUID: string): Entity {
     const target = document.querySelector("#" + UUID)
     if (target == null) {
         throw new Error("Not found " + UUID)

@@ -12,47 +12,47 @@
 
 <body>
 
-    <a-scene>
-        <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="rgb(127,127,127)" shadow>
-        </a-plane>
-        <a-sky color="rgb(255,255,255)">
-        </a-sky>
-        <a-box id="box" position="-1 0.5 5" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
-        </a-box>
-        <a-box position="1 0.5 4" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
-        </a-box>
-        <a-box position="3 0.5 1" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
-        </a-box>
-        <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="2 -3.95125E-19 2" rotation="0 0 0"
-            scale="1 1 1">
-        </a-entity>
-        <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -4.172471E-19 2" rotation="0 0 0"
-            scale="1 1 1">
-        </a-entity>
-        <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="1 -1.635766E-19 1" rotation="0 0 0"
-            scale="1 1 1">
-        </a-entity>
-        <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="3 3.038248E-19 -1" rotation="0 0 0"
-            scale="1 1 1">
-        </a-entity>
-        <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="2 6.583229E-20 0" rotation="0 0 0"
-            scale="1 1 1">
-        </a-entity>
-        <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -1.791579E-19 1" rotation="0 0 0"
-            scale="1 1 1">
-        </a-entity>
-        <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -7.027858E-20 0" rotation="0 0 0"
-            scale="1 1 1">
-        </a-entity>
-        <a-assets>
-            <a-asset-item id="https://hmwri.com/enfy/table.gltf" src="https://hmwri.com/enfy/table.gltf">
-            </a-asset-item>
-        </a-assets>
-    </a-scene>
+<a-scene>
+    <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="rgb(127,127,127)" shadow>
+    </a-plane>
+    <a-sky color="rgb(255,255,255)">
+    </a-sky>
+    <a-box id="box" position="-1 0.5 5" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
+    </a-box>
+    <a-box position="1 0.5 4" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
+    </a-box>
+    <a-box position="3 0.5 1" rotation="0 0 0" scale="1 1 1" color="rgb(0,0,0)" shadow>
+    </a-box>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="2 -3.95125E-19 2" rotation="0 0 0"
+              scale="1 1 1">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -4.172471E-19 2" rotation="0 0 0"
+              scale="1 1 1">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="1 -1.635766E-19 1" rotation="0 0 0"
+              scale="1 1 1">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="3 3.038248E-19 -1" rotation="0 0 0"
+              scale="1 1 1">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="2 6.583229E-20 0" rotation="0 0 0"
+              scale="1 1 1">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -1.791579E-19 1" rotation="0 0 0"
+              scale="1 1 1">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -7.027858E-20 0" rotation="0 0 0"
+              scale="1 1 1">
+    </a-entity>
+    <a-assets>
+        <a-asset-item id="https://hmwri.com/enfy/table.gltf" src="https://hmwri.com/enfy/table.gltf">
+        </a-asset-item>
+    </a-assets>
+</a-scene>
 
 </body>
 <script>
-    CtsEM.MakeEvent(       "box",
+    CtsEM.MakeEvent("box",
         {
             UUID: "",
             Triggers: [{
@@ -72,13 +72,13 @@
 
                             KeyFrames: [{
                                 UUID: "",
-                                time:0,
-                                value:0
+                                time: 0,
+                                value: 0
                             },
                                 {
                                     UUID: "",
-                                    time:2,
-                                    value:960
+                                    time: 2,
+                                    value: 96
                                 }]
                         }]
                     }]

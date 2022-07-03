@@ -5,48 +5,54 @@ import anime from "animejs";
 
 //UUIDを持っている
 interface haveUUID {
-    readonly UUID: string
+    readonly uuid: string
 }
 
-type TriggerType = "Auto" | "Touch"
-type BehaviourType = "Animation" | "Link"
+type TriggerType =
+      111 | // Auto
+      211   // Collision
+type BehaviourType =
+      111 | // Animation
+      211   // Link
 type Attribute =
-    "PositionX" | "PositionY" | "PositionZ" |
-    "RotationX" | "RotationY" | "RotationZ" |
-    "ScaleX" | "ScaleY" | "ScaleZ"
-type Easing = "Ease" | "Linear"
+    1111 | 1112 | 1113 | //PositionX ~ Z
+    1121 | 1122 | 1123 | //RotationX ~ Z
+    1131 | 1132 | 1133   //ScaleX ~ Z
+type Easing =
+    11 | //Linear
+    21  //Ease
 type Loop = number | boolean
 
 
 type CtsEvent = Readonly<{
-    Triggers: Trigger[],
-    Behaviours: Behaviour[],
+    triggers: Trigger[],
+    behaviours: Behaviour[],
 }> & haveUUID
 
 type Behaviour = Readonly<{
-    Type: BehaviourType
-    Animation?: CtsAnimation
-    Body?: string,
+    behaviourType: BehaviourType
+    animation?: CtsAnimation
+    body?: string,
 }> & haveUUID
 
 type CtsAnimation = Readonly<{
-    Clips: CtsAnimationClip[]
+    ctsClips: CtsAnimationClip[]
 }>
 
 type CtsAnimationClip = Readonly<{
-    Loop: Loop,
-    Curves: CtsAnimationCurve[];
+    loop: Loop,
+    curves: CtsAnimationCurve[];
 }>
 
 type CtsAnimationCurve = Readonly<{
-    Attribute: Attribute,
-    Easing: Easing,
-    KeyFrames: KeyFrame[];
+    attribute: Attribute,
+    easing: Easing,
+    keyFrames: KeyFrame[];
 }>
 
 type Trigger = Readonly<{
-    Type: TriggerType,
-    TargetUUID?: string
+    triggerType: TriggerType,
+    targetUuid?: string
 }> & haveUUID
 
 type KeyFrame = Readonly<{
@@ -63,18 +69,21 @@ type AnimKeyFrame = Readonly<{
 //CtsEvent構造体をもとにイベントを作成
 const makeEvent = function (targetUUID: string, e: CtsEvent) {
 
-    for (const trigger of e.Triggers) {
-        for (const behaviour of e.Behaviours) {
+    for (const trigger of e.triggers) {
+        for (const behaviour of e.behaviours) {
             //Triggerをもとにイベントリスナーを追加
-            switch (trigger.Type) {
-                case "Touch":
-                    if (trigger.TargetUUID == undefined) {
+            switch (trigger.triggerType) {
+                case 111:
+                    window.addEventListener("load", makeBehaviourFunction(targetUUID, behaviour));
+                    break;
+                case 211:
+                    if (trigger.targetUuid == undefined) {
                         throw new Error("This trigger type must be defined targetUUID")
                     }
-                    const target = getObjectWithID(trigger.TargetUUID)
+                    const target = getObjectWithID(trigger.targetUuid)
                     target.addEventListener("clicked", makeBehaviourFunction(targetUUID, behaviour))
-                case "Auto":
-                    window.addEventListener("load", makeBehaviourFunction(targetUUID, behaviour));
+                    break;
+
             }
         }
     }
@@ -83,29 +92,29 @@ const  makeEventTest = function () {
     makeEvent(
         "box",
         {
-            UUID: "",
-            Triggers: [{
-                UUID: "",
-                Type: "Auto",
+            uuid: "",
+            triggers: [{
+                uuid: "",
+                triggerType: 111,
                 //TargetUUID: "",
             }],
-            Behaviours: [{
-                UUID: "",
-                Type: "Animation",
-                Animation: {
-                    Clips: [{
-                        Loop: true,
-                        Curves: [{
-                            Attribute: "RotationZ",
-                            Easing: "Ease",
+            behaviours: [{
+                uuid: "",
+                behaviourType: 111,
+                animation: {
+                    ctsClips: [{
+                        loop: true,
+                        curves: [{
+                            attribute: 1121,
+                            easing: 11,
 
-                            KeyFrames: [{
-                                UUID: "",
+                            keyFrames: [{
+                                uuid: "",
                                 time:0,
                                 value:0
                             },
                                 {
-                                    UUID: "",
+                                    uuid: "",
                                     time:2,
                                     value:960
                                 }]
@@ -123,22 +132,23 @@ module.exports.MakeEventTest = makeEventTest
 
 //Behaviourをもとに関数を作成
 const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour): (() => void) {
-    switch (behaviour.Type) {
-        case "Animation":
+    switch (behaviour.behaviourType) {
+        //Animation
+        case 111:
             const target : Entity = getObjectWithID(targetUUID)
-            const animation = behaviour.Animation
+            const animation = behaviour.animation
             if (animation == undefined) {
                 throw new Error("behaviour type is animation but there is no animation information")
             }
-            for (const clip of animation.Clips) {
-                for (const curve of clip.Curves) {
-                    if (curve.KeyFrames.length < 2) throw new Error("require more than 1 keyframes")
-                    const animKeyFrames = convertToAnimKeyFrame(curve.KeyFrames)
+            for (const clip of animation.ctsClips) {
+                for (const curve of clip.curves) {
+                    if (curve.keyFrames.length < 2) throw new Error("require more than 1 keyframes")
+                    const animKeyFrames = convertToAnimKeyFrame(curve.keyFrames)
 
                     return function () {
 
                         const AnimationProperty: { value: number } = {
-                            value: curve.KeyFrames[0].value
+                            value: curve.keyFrames[0].value
                         }
 
 
@@ -147,11 +157,11 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
                             value: animKeyFrames,
                             update: function () {
                                 console.log((AnimationProperty.value/180) * Math.PI)
-                                updateValue(target,curve.Attribute,AnimationProperty.value);
+                                updateValue(target,curve.attribute,AnimationProperty.value);
                             },
-                            loop: clip.Loop,
-                            direction : clip.Loop == false ? "normal": "alternate",
-                            easing:curve.Easing == "Linear" ? "linear" : "cubicBezier(.33, .0, .66, 1)",
+                            loop: clip.loop,
+                            direction : clip.loop == false ? "normal": "alternate",
+                            easing:curve.easing == 11 ? "linear" : "cubicBezier(.33, .0, .66, 1)",
                         });
                     }
 
@@ -166,12 +176,13 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
                     duration: 800
                 });
             }
-        case "Link":
+        // Link
+        case 211:
             return function () {
-                if (behaviour.Body == undefined) {
+                if (behaviour.body == undefined) {
                     throw new Error("This is LINK Behaviour but not include body")
                 }
-                location.href = behaviour.Body
+                location.href = behaviour.body
             }
 
     }
@@ -195,31 +206,31 @@ function convertToAnimKeyFrame(kfs: KeyFrame[]): AnimKeyFrame[] {
 
 function updateValue(target: Entity, attr: Attribute, value: number) {
     switch (attr) {
-        case "PositionX":
+        case 1111:
             target.object3D.position.setX(value)
             break
-        case "PositionY":
+        case 1112:
             target.object3D.position.setY(value)
             break
-        case "PositionZ":
+        case 1113:
             target.object3D.position.setZ(value)
             break
-        case "RotationX":
+        case 1121:
             target.object3D.rotation.x = (value/180) * Math.PI
             break
-        case "RotationY":
+        case 1122:
             target.object3D.rotation.y = (value/180) * Math.PI
             break
-        case "RotationZ":
+        case 1123:
             target.object3D.rotation.z = (value/180) * Math.PI
             break
-        case "ScaleX":
+        case 1131:
             target.object3D.scale.setX(value)
             break
-        case "ScaleY":
+        case 1132:
             target.object3D.scale.setY(value)
             break
-        case "ScaleZ":
+        case 1133:
             target.object3D.scale.setZ(value)
             break
 

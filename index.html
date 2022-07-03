@@ -52,7 +52,39 @@
 
 </body>
 <script>
-    CtsEM.MakeEventTest()
+    CtsEM.MakeEvent(       "box",
+        {
+            UUID: "",
+            Triggers: [{
+                UUID: "",
+                Type: "Auto",
+                //TargetUUID: "",
+            }],
+            Behaviours: [{
+                UUID: "",
+                Type: "Animation",
+                Animation: {
+                    Clips: [{
+                        Loop: true,
+                        Curves: [{
+                            Attribute: "RotationZ",
+                            Easing: "Ease",
+
+                            KeyFrames: [{
+                                UUID: "",
+                                time:0,
+                                value:0
+                            },
+                                {
+                                    UUID: "",
+                                    time:2,
+                                    value:960
+                                }]
+                        }]
+                    }]
+                }
+            }]
+        },)
 
 </script>
 

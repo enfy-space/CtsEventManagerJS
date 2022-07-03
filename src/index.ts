@@ -94,10 +94,10 @@ const  makeEventTest = function () {
                 Type: "Animation",
                 Animation: {
                     Clips: [{
-                        Loop: false,
+                        Loop: true,
                         Curves: [{
-                            Attribute: "PositionZ",
-                            Easing: "Linear",
+                            Attribute: "RotationZ",
+                            Easing: "Ease",
 
                             KeyFrames: [{
                                 UUID: "",
@@ -107,7 +107,7 @@ const  makeEventTest = function () {
                                 {
                                     UUID: "",
                                     time:2,
-                                    value:2
+                                    value:960
                                 }]
                         }]
                     }]
@@ -146,11 +146,12 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
                             targets: AnimationProperty,
                             value: animKeyFrames,
                             update: function () {
-                                console.log(AnimationProperty.value)
+                                console.log((AnimationProperty.value/180) * Math.PI)
                                 updateValue(target,curve.Attribute,AnimationProperty.value);
-
                             },
-                            loop: clip.Loop
+                            loop: clip.Loop,
+                            direction : clip.Loop == false ? "normal": "alternate",
+                            easing:curve.Easing == "Linear" ? "linear" : "cubicBezier(.33, .0, .66, 1)",
                         });
                     }
 
@@ -184,7 +185,8 @@ function convertToAnimKeyFrame(kfs: KeyFrame[]): AnimKeyFrame[] {
             result.push({
                 value: kf.value,
                 duration: (kf.time - kfs[i - 1].time) * 1000,
-                delay: i == 1 ? (kfs[0].time) * 1000 : 0
+                delay: i == 1 ? (kfs[0].time) * 1000 : 0,
+
             })
         }
     }
@@ -195,10 +197,31 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
     switch (attr) {
         case "PositionX":
             target.object3D.position.setX(value)
+            break
         case "PositionY":
             target.object3D.position.setY(value)
+            break
         case "PositionZ":
             target.object3D.position.setZ(value)
+            break
+        case "RotationX":
+            target.object3D.rotation.x = (value/180) * Math.PI
+            break
+        case "RotationY":
+            target.object3D.rotation.y = (value/180) * Math.PI
+            break
+        case "RotationZ":
+            target.object3D.rotation.z = (value/180) * Math.PI
+            break
+        case "ScaleX":
+            target.object3D.scale.setX(value)
+            break
+        case "ScaleY":
+            target.object3D.scale.setY(value)
+            break
+        case "ScaleZ":
+            target.object3D.scale.setZ(value)
+            break
 
     }
 }

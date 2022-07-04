@@ -203,19 +203,19 @@ function convertToAnimKeyFrame(kfs: KeyFrame[]): AnimKeyFrame[] {
 function updateValue(target: Entity, attr: Attribute, value: number) {
     switch (attr) {
         case 1111:
-            target.object3D.position.setX(-value)
+            target.object3D.position.setX(value)
             break
         case 1112:
             target.object3D.position.setY(value)
             break
         case 1113:
-            target.object3D.position.setZ(value)
+            target.object3D.position.setZ(-value)
             break
         case 1121:
-            target.object3D.rotation.x = (value / 180) * Math.PI
+            target.object3D.rotation.x = -(value / 180) * Math.PI
             break
         case 1122:
-            target.object3D.rotation.y = (value / 180) * Math.PI
+            target.object3D.rotation.y = -(value / 180) * Math.PI
             break
         case 1123:
             target.object3D.rotation.z = (value / 180) * Math.PI

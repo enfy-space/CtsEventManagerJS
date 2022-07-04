@@ -13,46 +13,22 @@
     </a-plane>
     <a-sky color="rgb(255,255,255)">
     </a-sky>
-    <a-box position="-1 0.5 1" rotation="0 0 0" scale="1 1 1" id="cdc44998-e522-4c37-8a88-7a8ad22e1bc9"
-           color="rgb(0,0,0)" shadow>
+    <a-camera position="0 1.7 0" rotation="0 180 0" fov="60">
+    </a-camera>
+    <a-box position="-1 0.5 -6" rotation="0 0 0" scale="1 1 1" id="cd18e0d5-b397-4379-9d46-acde9e6d4666" color="rgb(0,0,0)" shadow>
     </a-box>
-    <a-box position="-1 1.5 1" rotation="0 0 0" scale="1 1 1" id="b122331a-4e2e-4b6e-90f2-78e9a8adfa8d"
-           color="rgb(0,0,0)" shadow>
-    </a-box>
-    <a-box position="-1 1.5 0" rotation="0 0 0" scale="1 1 1" id="b31c1a9b-9664-4787-bf88-87b1fdfae22e"
-           color="rgb(0,0,0)" shadow>
-    </a-box>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="0 -7.172897E-19 -3" rotation="0 0 0" scale="1 1 1" id="bb981a4c-8396-4837-9090-35543dd39b37">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="3 -4.655094E-19 -2" rotation="0 -90 0" scale="1 1 1" id="195e7493-2031-4550-97b1-f6470a950f48">
+    </a-entity>
+    <a-entity gltf-model="#https://hmwri.com/enfy/table.gltf" shadow position="1 -3.722101E-19 -2" rotation="0 -90 0" scale="0.9979999 0.9979999 0.9979999" id="927715af-77c6-49ac-8650-a21a7be710b0">
+    </a-entity>
     <a-assets>
+        <a-asset-item id="https://hmwri.com/enfy/table.gltf" src="https://hmwri.com/enfy/table.gltf">
+        </a-asset-item>
     </a-assets>
 </a-scene>
 <script>
-    CtsEM.MakeEvent("b31c1a9b-9664-4787-bf88-87b1fdfae22e", {
-        "uuid": "280a64b1-eb88-44f8-882b-8b20c999a2c2",
-        "triggers": [{"uuid": "19fa157b-0ba8-4bb9-8dfa-1aa03fd4742a", "triggerType": 111, "targetUuid": ""}],
-        "behaviours": [{
-            "uuid": "2cf836c4-d452-47cb-973c-fc8144ca6139",
-            "behaviourType": 111,
-            "animation": {
-                "uuid": "2cf836c4-d452-47cb-973c-fc8144ca6139",
-                "ctsClips": [{
-                    "curves": [{
-                        "attribute": 1111,
-                        "easing": 11,
-                        "keyFrames": [{"time": 0.0, "value": -1.0}, {"time": 2.0, "value": 2.0}]
-                    }, {
-                        "attribute": 1112,
-                        "easing": 11,
-                        "keyFrames": [{"time": 0.0, "value": 1.5}, {"time": 2.0, "value": 0.5}]
-                    }, {
-                        "attribute": 1113,
-                        "easing": 11,
-                        "keyFrames": [{"time": 0.0, "value": 0.0}, {"time": 2.0, "value": -1.0}]
-                    }], "loop": true
-                }]
-            },
-            "body": ""
-        }]
-    })
-</script>
-</body>
+    CtsEM.MakeEvent("bb981a4c-8396-4837-9090-35543dd39b37" , {"uuid":"a904bdec-f436-47a0-9b89-b38101498756","triggers":[{"uuid":"d35f1653-0161-4f9d-95b5-ae94ce3a72c4","triggerType":111,"targetUuid":""}],"behaviours":[{"uuid":"7edff5e8-baf8-4d64-a801-2f94ac1fde73","behaviourType":111,"animation":{"uuid":"7edff5e8-baf8-4d64-a801-2f94ac1fde73","ctsClips":[{"curves":[{"attribute":1111,"easing":11,"keyFrames":[{"time":0.0,"value":0.0},{"time":2.0,"value":3.0}]},{"attribute":1112,"easing":11,"keyFrames":[{"time":0.0,"value":-7.172897198741462e-19},{"time":2.0,"value":0.7000001072883606}]},{"attribute":1113,"easing":11,"keyFrames":[{"time":0.0,"value":3.0},{"time":2.0,"value":2.0}]},{"attribute":1121,"easing":11,"keyFrames":[{"time":0.0,"value":0.0},{"time":2.0,"value":0.0}]},{"attribute":1122,"easing":11,"keyFrames":[{"time":0.0,"value":0.0},{"time":2.0,"value":260.0}]},{"attribute":1123,"easing":11,"keyFrames":[{"time":0.0,"value":0.0},{"time":2.0,"value":0.0}]}],"loop":true}]},"body":""}]})
+</script></body>
 </html>

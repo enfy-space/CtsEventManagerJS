@@ -156,7 +156,7 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
                             targets: AnimationProperty,
                             value: animKeyFrames,
                             update: function () {
-                                console.log((AnimationProperty.value / 180) * Math.PI)
+
                                 updateValue(target, curve.attribute, AnimationProperty.value);
                             },
                             loop: clip.loop,
@@ -232,9 +232,20 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
 
     }
 }
+function isNumber(value: any): boolean {
+    return !Number.isNaN(parseInt(value));
+}
+function escapeUUID(UUID:string) : string {
+    const first:string  = UUID.slice(0,1);
+    if(isNumber(UUID.slice(0,1))){
+        return `\\003`+first + " " + UUID.slice(1)
+    }
+    return UUID;
+}
 
 function getObjectWithID(UUID: string): Entity {
-    const target = document.querySelector("#" + UUID)
+    console.log(escapeUUID(UUID))
+    const target = document.querySelector("#" + escapeUUID(UUID))
     if (target == null) {
         throw new Error("Not found " + UUID)
     }

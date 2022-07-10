@@ -10,7 +10,7 @@ interface haveUUID {
 
 type TriggerType =
     111 | // Auto
-    211   // Collision
+    211   // Click
 type BehaviourType =
     111 | // Animation
     211   // Link
@@ -80,8 +80,9 @@ const makeEvent = function (targetUUID: string, e: CtsEvent) {
                     if (trigger.targetUuid == undefined) {
                         throw new Error("This trigger type must be defined targetUUID")
                     }
+
                     const target = getObjectWithID(trigger.targetUuid)
-                    target.addEventListener("clicked", makeBehaviourFunction(targetUUID, behaviour))
+                    target.addEventListener("click", makeBehaviourFunction(targetUUID, behaviour))
                     break;
 
             }
@@ -244,7 +245,7 @@ function escapeUUID(UUID:string) : string {
 }
 
 function getObjectWithID(UUID: string): Entity {
-    console.log(escapeUUID(UUID))
+
     const target = document.querySelector("#" + escapeUUID(UUID))
     if (target == null) {
         throw new Error("Not found " + UUID)

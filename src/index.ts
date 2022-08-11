@@ -47,6 +47,7 @@ type CtsAnimationClip = Readonly<{
 type CtsAnimationCurve = Readonly<{
     attribute: Attribute,
     easing: Easing,
+    initialValue : number;
     keyFrames: KeyFrame[];
 }>
 
@@ -108,6 +109,7 @@ const makeEventTest = function () {
                         curves: [{
                             attribute: 1121,
                             easing: 11,
+                            initialValue: 0.5,
 
                             keyFrames: [{
                                 uuid: "",
@@ -144,12 +146,12 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
             for (const clip of animation.ctsClips) {
                 for (const curve of clip.curves) {
                     if (curve.keyFrames.length < 2) throw new Error("require more than 1 keyframes")
-                    const animKeyFrames = convertToAnimKeyFrame(curve.keyFrames)
+                    const animKeyFrames = convertToAnimKeyFrame(curve.keyFrames,curve.initialValue)
 
                     functions.push(function () {
 
                         const AnimationProperty: { value: number } = {
-                            value: curve.keyFrames[0].value
+                            value: curve.keyFrames[0].value + curve.initialValue
                         }
 
 
@@ -186,12 +188,12 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
 
 }
 
-function convertToAnimKeyFrame(kfs: KeyFrame[]): AnimKeyFrame[] {
+function convertToAnimKeyFrame(kfs: KeyFrame[],initialValue:number): AnimKeyFrame[] {
     const result: AnimKeyFrame[] = [];
     for (const [i, kf] of kfs.entries()) {
         if (i != 0) {
             result.push({
-                value: kf.value,
+                value: kf.value + initialValue,
                 duration: (kf.time - kfs[i - 1].time) * 1000,
                 delay: i == 1 ? (kfs[0].time) * 1000 : 0,
 

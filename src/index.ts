@@ -1,5 +1,5 @@
-import {Entity} from "aframe";
 
+import {Entity,THREE} from "aframe";
 import anime from "animejs";
 
 
@@ -17,7 +17,8 @@ type BehaviourType =
 type Attribute =
     1111 | 1112 | 1113 | //PositionX ~ Z
     1121 | 1122 | 1123 | //RotationX ~ Z
-    1131 | 1132 | 1133   //ScaleX ~ Z
+    1131 | 1132 | 1133 | //ScaleX ~ Z
+    2111 | 2112 | 2113 | 2114 //ColorR~A
 type Easing =
     11 | //Linear
     21  //Ease
@@ -130,7 +131,7 @@ const makeEventTest = function () {
 }
 module.exports.MakeEvent = makeEvent
 module.exports.MakeEventTest = makeEventTest
-
+console.log(THREE)
 
 //Behaviourをもとに関数を作成
 const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour): (() => void) {
@@ -153,8 +154,7 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
                         const AnimationProperty: { value: number } = {
                             value: curve.keyFrames[0].value + curve.initialValue
                         }
-
-
+                        
                         anime({
                             targets: AnimationProperty,
                             value: animKeyFrames,
@@ -202,8 +202,9 @@ function convertToAnimKeyFrame(kfs: KeyFrame[],initialValue:number): AnimKeyFram
     }
     return result;
 }
-
 function updateValue(target: Entity, attr: Attribute, value: number) {
+    let m =  (target.getObject3D("mesh") as THREE.Mesh).material ;
+    let material = m as THREE.MeshBasicMaterial
     switch (attr) {
         case 1111:
             target.object3D.position.setX(value)
@@ -232,9 +233,29 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
         case 1133:
             target.object3D.scale.setZ(value)
             break
+        case 2111:
+        {
+            material.color.r = value;
+        }
+            break
+        case 2112:
+        {
+            material.color.g = value;
+            break
+        }
+        case 2113:
+        {
+            material.color.b = value;
+            break
+        }
 
     }
 }
+// function changeColor(m:THREE.Material,attributeNum:number){
+//     const material = m as THREE.MeshBasicMaterial;
+//     const r = material.color.r;
+//     material.color.setRGB(1,1,1);
+// }
 function isNumber(value: any): boolean {
     return !Number.isNaN(parseInt(value));
 }
@@ -246,7 +267,7 @@ function escapeUUID(UUID:string) : string {
     return UUID;
 }
 
-function getObjectWithID(UUID: string): Entity {
+function getObjectWithID(UUID: string):Entity {
 
     const target = document.querySelector("#" + escapeUUID(UUID))
     if (target == null) {

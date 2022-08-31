@@ -203,9 +203,15 @@ function convertToAnimKeyFrame(kfs: KeyFrame[],initialValue:number): AnimKeyFram
     return result;
 }
 function updateValue(target: Entity, attr: Attribute, value: number) {
-    let m =  (target.getObject3D("mesh") as THREE.Mesh).material ;
-    let material = m as THREE.MeshBasicMaterial
+    let mesh = target.getObject3D("mesh") as THREE.Mesh
+    let material : THREE.MeshBasicMaterial;
+    if(mesh){
+        let m =  mesh.material ;
+        material = m as THREE.MeshBasicMaterial
+    }
     switch (attr) {
+        case 2114:
+            break;
         case 1111:
             target.object3D.position.setX(value)
             break
@@ -234,20 +240,15 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
             target.object3D.scale.setZ(value)
             break
         case 2111:
-        {
-            material.color.r = value;
-        }
+            material!.color.r = value;
             break
         case 2112:
-        {
-            material.color.g = value;
+            material!.color.g = value;
             break
-        }
         case 2113:
-        {
-            material.color.b = value;
+            material!.color.b = value;
             break
-        }
+
 
     }
 }

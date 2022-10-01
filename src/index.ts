@@ -1,6 +1,7 @@
-
-import {Entity,THREE} from "aframe";
+import nipplejs, {EventData, JoystickManagerOptions, JoystickOutputData} from "nipplejs"
+import {Entity, THREE} from "aframe";
 import anime from "animejs";
+
 
 
 //UUIDを持っている
@@ -48,7 +49,7 @@ type CtsAnimationClip = Readonly<{
 type CtsAnimationCurve = Readonly<{
     attribute: Attribute,
     easing: Easing,
-    initialValue : number;
+    initialValue: number;
     keyFrames: KeyFrame[];
 }>
 
@@ -143,18 +144,18 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
             if (animation == undefined) {
                 throw new Error("behaviour type is animation but there is no animation information")
             }
-            const functions : (() => void)[] = [];
+            const functions: (() => void)[] = [];
             for (const clip of animation.ctsClips) {
                 for (const curve of clip.curves) {
                     if (curve.keyFrames.length < 2) throw new Error("require more than 1 keyframes")
-                    const animKeyFrames = convertToAnimKeyFrame(curve.keyFrames,curve.initialValue)
+                    const animKeyFrames = convertToAnimKeyFrame(curve.keyFrames, curve.initialValue)
 
                     functions.push(function () {
 
                         const AnimationProperty: { value: number } = {
                             value: curve.keyFrames[0].value + curve.initialValue
                         }
-                        
+
                         anime({
                             targets: AnimationProperty,
                             value: animKeyFrames,
@@ -188,7 +189,93 @@ const makeBehaviourFunction = function (targetUUID: string, behaviour: Behaviour
 
 }
 
-function convertToAnimKeyFrame(kfs: KeyFrame[],initialValue:number): AnimKeyFrame[] {
+function generateStyle(styles: string[][]): string {
+    let result = ""
+    for (const style of styles) {
+        const name = style[0]
+        const value = style[1]
+        result += name + ":"
+        if(value != "") {
+            result += value + ";"
+        }
+
+
+    }
+    return result
+}
+
+
+
+
+
+const SetUpUi = function () {
+    let basestyle = generateStyle(
+        [
+            ["position", "fixed"],
+            ["z-index", "2"],
+            ["bottom", "80px"],
+            ["left", "80px"],
+        ]
+    )
+    // let stickstyle = generateStyle(
+    //     [
+    //         ["background-color", "#fff8"],
+    //         ["z-index", "3"],
+    //         ["width", "30px"],
+    //         ["height", "30px"],
+    //         ["Roboto",""],
+    //         ["border-radius", "50%"],
+    //     ]
+    // )
+    let base = document.createElement("div");
+    base.setAttribute("id", "base");
+    base.setAttribute("style", basestyle);
+    document.querySelector("body").appendChild(base)
+    console.log(base)
+    var configs : JoystickManagerOptions= {
+        mode: 'static',
+        zone: base,
+        color: "#0F0000",
+    }
+
+    let npManager : nipplejs.JoystickManager = nipplejs.create(configs)
+    bindNipple();
+    function bindNipple() {
+        npManager
+            .on("move", move)
+        npManager.on("end",function() {dx=0;dy=0})
+
+    }
+    let camera : Entity   = getObjectWithID("camera")!
+    let dx = 0
+    let dy = 0
+    function move (evt:EventData,data:JoystickOutputData){
+        let f = data.force;
+        let angle = data.angle.radian
+        let ry = camera.getAttribute('rotation')!['y']
+
+        dx = f/15*Math.cos(angle + Math.PI/180*ry)
+        dy = f/15*Math.sin(angle + Math.PI/180*ry)
+
+    }
+    function  moveCamera (){
+        camera.object3D.position.x +=  dx
+        camera.object3D.position.z -= dy
+    }
+
+    AFRAME.registerComponent('joystick',{
+        tick:function() {
+            moveCamera()
+        }
+    })
+
+
+}
+
+module.exports.SetUpUi = SetUpUi
+
+
+function convertToAnimKeyFrame(kfs: KeyFrame[], initialValue: number): AnimKeyFrame[] {
     const result: AnimKeyFrame[] = [];
     for (const [i, kf] of kfs.entries()) {
         if (i != 0) {
@@ -202,11 +289,12 @@ function convertToAnimKeyFrame(kfs: KeyFrame[],initialValue:number): AnimKeyFram
     }
     return result;
 }
+
 function updateValue(target: Entity, attr: Attribute, value: number) {
     let mesh = target.getObject3D("mesh") as THREE.Mesh
-    let material : THREE.MeshBasicMaterial;
-    if(mesh){
-        let m =  mesh.material ;
+    let material: THREE.MeshBasicMaterial;
+    if (mesh) {
+        let m = mesh.material;
         material = m as THREE.MeshBasicMaterial
     }
     switch (attr) {
@@ -252,6 +340,7 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
 
     }
 }
+
 // function changeColor(m:THREE.Material,attributeNum:number){
 //     const material = m as THREE.MeshBasicMaterial;
 //     const r = material.color.r;
@@ -260,15 +349,16 @@ function updateValue(target: Entity, attr: Attribute, value: number) {
 function isNumber(value: any): boolean {
     return !Number.isNaN(parseInt(value));
 }
-function escapeUUID(UUID:string) : string {
-    const first:string  = UUID.slice(0,1);
-    if(isNumber(UUID.slice(0,1))){
-        return `\\003`+first + " " + UUID.slice(1)
+
+function escapeUUID(UUID: string): string {
+    const first: string = UUID.slice(0, 1);
+    if (isNumber(UUID.slice(0, 1))) {
+        return `\\003` + first + " " + UUID.slice(1)
     }
     return UUID;
 }
 
-function getObjectWithID(UUID: string):Entity {
+function getObjectWithID(UUID: string): Entity {
 
     const target = document.querySelector("#" + escapeUUID(UUID))
     if (target == null) {

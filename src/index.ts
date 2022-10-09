@@ -236,6 +236,7 @@ const SetUpUi = function () {
         mode: 'static',
         zone: base,
         color: "#0F0000",
+        dynamicPage : true,
     }
 
     let npManager : nipplejs.JoystickManager = nipplejs.create(configs)
@@ -253,12 +254,16 @@ const SetUpUi = function () {
         let f = data.force;
         let angle = data.angle.radian
         let ry = camera.getAttribute('rotation')!['y']
-
+        console.log(dx)
         dx = f/15*Math.cos(angle + Math.PI/180*ry)
         dy = f/15*Math.sin(angle + Math.PI/180*ry)
 
+
     }
     function  moveCamera (){
+        if(isNaN(dx) || isNaN(dy)){
+            return
+        }
         camera.object3D.position.x +=  dx
         camera.object3D.position.z -= dy
     }

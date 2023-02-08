@@ -1,9 +1,9 @@
-import nipplejs, {EventData, JoystickManagerOptions, JoystickOutputData} from "nipplejs"
-import {Entity, THREE} from "aframe";
+import nipplejs, { EventData, JoystickManagerOptions, JoystickOutputData } from "nipplejs"
+import { Entity, THREE } from "aframe";
 import anime from "animejs";
 
 
-
+//""
 //UUIDを持っている
 interface haveUUID {
     readonly uuid: string
@@ -118,11 +118,11 @@ const makeEventTest = function () {
                                 time: 0,
                                 value: 0
                             },
-                                {
-                                    uuid: "",
-                                    time: 2,
-                                    value: 960
-                                }]
+                            {
+                                uuid: "",
+                                time: 2,
+                                value: 960
+                            }]
                         }]
                     }]
                 }
@@ -195,7 +195,7 @@ function generateStyle(styles: string[][]): string {
         const name = style[0]
         const value = style[1]
         result += name + ":"
-        if(value != "") {
+        if (value != "") {
             result += value + ";"
         }
 
@@ -232,44 +232,44 @@ const SetUpUi = function () {
     base.setAttribute("style", basestyle);
     document.querySelector("body").appendChild(base)
     console.log(base)
-    var configs : JoystickManagerOptions= {
+    var configs: JoystickManagerOptions = {
         mode: 'static',
         zone: base,
         color: "#0F0000",
-        dynamicPage : true,
+        dynamicPage: true,
     }
 
-    let npManager : nipplejs.JoystickManager = nipplejs.create(configs)
+    let npManager: nipplejs.JoystickManager = nipplejs.create(configs)
     bindNipple();
     function bindNipple() {
         npManager
             .on("move", move)
-        npManager.on("end",function() {dx=0;dy=0})
+        npManager.on("end", function () { dx = 0; dy = 0 })
 
     }
-    let camera : Entity   = getObjectWithID("camera")!
+    let camera: Entity = getObjectWithID("camera")!
     let dx = 0
     let dy = 0
-    function move (evt:EventData,data:JoystickOutputData){
+    function move(evt: EventData, data: JoystickOutputData) {
         let f = data.force;
         let angle = data.angle.radian
         let ry = camera.getAttribute('rotation')!['y']
         console.log(dx)
-        dx = f/15*Math.cos(angle + Math.PI/180*ry)
-        dy = f/15*Math.sin(angle + Math.PI/180*ry)
+        dx = f / 15 * Math.cos(angle + Math.PI / 180 * ry)
+        dy = f / 15 * Math.sin(angle + Math.PI / 180 * ry)
 
 
     }
-    function  moveCamera (){
-        if(isNaN(dx) || isNaN(dy)){
+    function moveCamera() {
+        if (isNaN(dx) || isNaN(dy)) {
             return
         }
-        camera.object3D.position.x +=  dx
+        camera.object3D.position.x += dx
         camera.object3D.position.z -= dy
     }
 
-    AFRAME.registerComponent('joystick',{
-        tick:function() {
+    AFRAME.registerComponent('joystick', {
+        tick: function () {
             moveCamera()
         }
     })
